@@ -1,0 +1,27 @@
+#!/bin/bash
+
+chmod +x rpifirstboot/firstboot && \
+chmod +x rpifirstboot/imager_custom && \
+chmod +x rpifirstboot/init_config && \
+chmod +x rpifirstboot/regenerate_ssh_host_keys && \
+echo "Moving files to /usr/lib/raspberrypi-sys-mods ...." && \
+mv rpifirstboot/firstboot /usr/lib/raspberrypi-sys-mods/firstboot  && \
+mv rpifirstboot/imager_custom  /usr/lib/raspberrypi-sys-mods/imager_custom && \
+mv rpifirstboot/init_config /usr/lib/raspberrypi-sys-mods/init_config && \
+mv rpifirstboot/regenerate_ssh_host_keys /usr/lib/raspberrypi-sys-mods/regenerate_ssh_host_keys && \
+ls -allh /usr/lib/raspberrypi-sys-mods && \
+sudo rm -rf rpifirstboot && \
+echo "Adding init command to /boot/cmdline.txt ...." && \
+
+if grep -Fq "init=/usr/lib/raspberrypi-sys-mods/firstboot" /boot/cmdline.txt
+then
+    echo "init command already in cmdline.txt"
+else
+    # code if not found
+    echo "init command NOT FOUND in cmdline.txt will be added... "
+    sed -i '1s/$/ init=\/usr\/lib\/raspberrypi-sys-mods\/firstboot/' /boot/cmdline.txt
+fi
+
+cat /boot/cmdline.txt
+
+echo "Done"
