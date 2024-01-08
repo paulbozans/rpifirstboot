@@ -157,7 +157,7 @@ do_resize () {
     fi
   fi
 
-  if ! parted -m "$ROOT_DEV" u s resizepart "$ROOT_PART_NUM" "$TARGET_END"; then
+  if ! parted -m "$ROOT_DEV" u s resizepart "$ROOT_PART_NUM" yes "$TARGET_END"; then
     FAIL_REASON="Partition table resize of the root partition ($ROOT_PART_DEV) failed\n$FAIL_REASON"
     return 1
   fi
